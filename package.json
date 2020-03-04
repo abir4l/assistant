@@ -1,0 +1,19 @@
+{
+  "name": "feeds",
+  "version": "1.0.0",
+  "description": "social feeds on one place, in a different theme to enable usage in work place",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abiral Khanal",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.0.2"
+  },
+  "dependencies": {
+    "electron-reload": "^1.5.0",
+    "semantic-ui": "^2.4.2"
+  }
+}

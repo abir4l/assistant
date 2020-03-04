@@ -1,0 +1,3 @@
+*.swp
+*lock.json
+node_modules/
