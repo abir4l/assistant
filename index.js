@@ -1,8 +1,14 @@
 const { app,BrowserWindow,ipcMain,Menu,MenuItem }= require('electron');
 const  Window= require('./Window');
 const  path= require('path');
+const  Store = require('electron-store');
 require('electron-reload')(__dirname)
 
+store = new Store()
+store.set({
+		name:'changed',
+		active:'feeds'
+});
 app.allowRenderedProcessReuse = true;
 app.on('ready',createWindow);
 app.on('window-all-closed',()=>{
