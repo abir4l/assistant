@@ -11,16 +11,7 @@ body{
 .wrapper.bring-to-right{
 	margin-left:16em
 }
-#sidebar-wrapper{
-	position:relative;
-}
-#sidebar-button{
-
-}
- #sidebar-button-wrapper{
-	 position:absolute;
-	 top:10px;
- }
-.slide-close{
+ .slide-close{
 	left:210px;
 }
+

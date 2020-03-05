@@ -1,4 +1,4 @@
-const { app,BrowserWindow,ipcMain }= require('electron');
+const { app,BrowserWindow,ipcMain,Menu,MenuItem }= require('electron');
 const  Window= require('./Window');
 const  path= require('path');
 require('electron-reload')(__dirname)
@@ -17,7 +17,16 @@ app.on('activate',()=>{
 
 function createWindow(){
 	let mainWindow = new Window({file:path.join('design','index.html')});
+	appMenu = Menu.getApplicationMenu();
+	sidebar = new MenuItem({
+			label:'Toggle Sidebar',
+			click:function(){
+				mainWindow.sendToFront('user-action','sidebar')
+			}
+
+	});
+	viewMenu= Menu.getApplicationMenu().items.find( item => item.commandId == 22);
+	viewMenu.submenu.append(sidebar);
 	ipcMain.on('clicked',(event,data)=>{
-		console.log(data);
 		mainWindow.sendToFront('load',data)});
 }
