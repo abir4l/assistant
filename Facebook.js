@@ -1,7 +1,8 @@
 const {BrowserWindow} = require('electron');
+const  Store = require('electron-store'); //store for better data communication
 
+let store = new Store();
 Facebook = function(){
-
 	this.login = function(options,mainWindow,userDataIO){
 		
 		let fbWindow = new BrowserWindow({
@@ -27,7 +28,9 @@ Facebook = function(){
 				tokenData = urlData.reduce((sum,item)=>{
 					sum[item.split('=')[0]] = item.split('=')[1];
 					return sum;
-				},{});	
+				},{});
+				
+				store.set('login-required',false);
 				userDataIO.saveToFile(tokenData,options.user_file);
 			}
 		};

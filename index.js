@@ -14,6 +14,7 @@ var userDataIO = new UserData();
 var store = new Store();
 var mainWindow;
 
+
 app.allowRenderedProcessReuse = true;
 app.on('ready',createWindow);
 app.on('window-all-closed',()=>{
@@ -29,9 +30,12 @@ app.on('activate',()=>{
 function createWindow(){
 	
 	mainWindow = new Window({file:path.join('design','index.html')});
-	appMenu = Menu.getApplicationMenu();
+	let appMenu = Menu.getApplicationMenu();
 
-	userState = new Init(mainWindow,appMenu).start();
+	// init tasks before rendering
+	let initOperations = new Init(mainWindow,appMenu);
+	let userState = initOperations.getUserState();
+	userState !== null ? initOperations.fetchFeed(userState): null;
 	store.set({
 			name:'Feeds',
 			active:'feeds',
