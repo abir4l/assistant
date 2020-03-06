@@ -1,15 +1,19 @@
 const { app,BrowserWindow,ipcMain,Menu,MenuItem,globalShortcut}= require('electron');
-const  Window= require('./Window');
-const  path= require('path');
-const  Store = require('electron-store');
-require('electron-reload')(__dirname)
+const  path= require('path'); //nodejs path library
+const  Store = require('electron-store'); //store for better data communication
+require('electron-reload')(__dirname)// instant reload html and css changes
 
+//User defined classes
+const  Window= require('./Window'); // extended Browser window
+const  options = require('./env.json'); // config properties
+const  UserData = require('./userdata.js'); // used to process user state from facebook
+const  Facebook = require('./Facebook'); // facebook window
+const  Init = require('./Init'); // facebook window
 
-store = new Store()
-store.set({
-		name:'Feeds',
-		active:'feeds'
-});
+var userDataIO = new UserData();
+var store = new Store();
+var mainWindow;
+
 app.allowRenderedProcessReuse = true;
 app.on('ready',createWindow);
 app.on('window-all-closed',()=>{
@@ -23,22 +27,22 @@ app.on('activate',()=>{
 });
 
 function createWindow(){
-	let mainWindow = new Window({file:path.join('design','index.html')});
+	
+	mainWindow = new Window({file:path.join('design','index.html')});
 	appMenu = Menu.getApplicationMenu();
-	sidebar = new MenuItem({
-			label:'Toggle Sidebar',
-			click:function(){
-				mainWindow.sendToFront('user-action','sidebar')
-			}
 
+	userState = new Init(mainWindow,appMenu).start();
+	store.set({
+			name:'Feeds',
+			active:'feeds',
+			loginRequired: userState == null,
 	});
-	viewMenu= Menu.getApplicationMenu().items.find( item => item.commandId == 22);
-	viewMenu.submenu.append(sidebar);
-	ipcMain.on('clicked',(event,data)=>{
-		mainWindow.sendToFront('load',data)});
 	globalShortcut.register('CommandOrControl+Shift+.', () => {
-			mainWindow.sendToFront('user-action','sidebar')
+		mainWindow.sendToFront('user-action','sidebar')
 	});
-
-
 }
+
+ipcMain.on('fb-login',function(event){
+		facebook = new Facebook();
+		facebook.login(options,mainWindow,userDataIO);
+});

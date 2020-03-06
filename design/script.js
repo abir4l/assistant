@@ -13,6 +13,10 @@ $('#button').click(function(){
 ipcRenderer.on('load',function(event,data){
 	document.getElementById('data').innerHTML = data;
 });
+function loginFacebook(){
+	ipcRenderer.send('fb-login');
+
+}
 function toggleSidebar(){
 	$('#sidebar').toggleClass('visible');
 	$('.wrapper').toggleClass('bring-to-right');
@@ -26,9 +30,26 @@ $('.sidebar .item').click(function(){
 	});
 	$(this).addClass('active');
 });
+function updateStatusCallback(response){
+	console.log(response);
+
+}
 $(document).ready(function(){
+	$.ajaxSetup({ cache: true });
 	store = new Store();
+	showLogin = store.get('loginRequired');
 	$('.wrapper').load('./feeds.html',function(){
 		document.getElementById('data').innerHTML = store.get('name');
+		if(!showLogin){
+			$('#facebook-button').hide();
+		}
 	});
+//	$.getScript('https://connect.facebook.net/en_US/sdk.js', function(){
+//		FB.init({
+//				appId: '512028469499464',
+//				version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+//		});     
+//		$('#loginbutton,#feedbutton').removeAttr('disabled');
+//		FB.getLoginStatus(updateStatusCallback);
+//	});
 });

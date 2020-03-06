@@ -1,3 +1,7 @@
 *.swp
 *lock.json
 node_modules/
+env.json
+userdata.js
+user.json
+.idea/
