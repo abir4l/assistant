@@ -1,12 +1,13 @@
-const { app,BrowserWindow,ipcMain,Menu,MenuItem }= require('electron');
+const { app,BrowserWindow,ipcMain,Menu,MenuItem,globalShortcut}= require('electron');
 const  Window= require('./Window');
 const  path= require('path');
 const  Store = require('electron-store');
 require('electron-reload')(__dirname)
 
+
 store = new Store()
 store.set({
-		name:'changed',
+		name:'Feeds',
 		active:'feeds'
 });
 app.allowRenderedProcessReuse = true;
@@ -35,4 +36,9 @@ function createWindow(){
 	viewMenu.submenu.append(sidebar);
 	ipcMain.on('clicked',(event,data)=>{
 		mainWindow.sendToFront('load',data)});
+	globalShortcut.register('CommandOrControl+Shift+.', () => {
+			mainWindow.sendToFront('user-action','sidebar')
+	});
+
+
 }

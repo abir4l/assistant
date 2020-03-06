@@ -2,7 +2,7 @@ body{
 	font-family:'roboto';
 }
 .main.container{
-	margin-top:7em;
+	margin-top:2em;
 }
 .wrapper{
 	transition: margin 0.5s;

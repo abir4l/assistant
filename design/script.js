@@ -1,14 +1,5 @@
-const { ipcRenderer,remote } = require('electron')
-const {globalShortcut} = remote;
+const { ipcRenderer} = require('electron')
 const Store = require('electron-store');
-
-store = new Store();
-document.getElementById('data').innerHTML = store.get('name');
-
-globalShortcut.register('CommandOrControl+Shift+.', () => {
-	toggleSidebar();
-})
-
 
 ipcRenderer.on('user-action',function(event){
 	toggleSidebar();
@@ -29,4 +20,15 @@ function toggleSidebar(){
 $('.sidebar .item').click(function(){
 	textContent = $(this).text();
 	store.set('active',textContent.trim().toLowerCase())
+	$('.sidebar .item').removeClass('active');
+	$('.wrapper').load('./'+textContent.trim().toLowerCase()+'.html',function(){
+		document.getElementById('data').innerHTML = textContent;
+	});
+	$(this).addClass('active');
+});
+$(document).ready(function(){
+	store = new Store();
+	$('.wrapper').load('./feeds.html',function(){
+		document.getElementById('data').innerHTML = store.get('name');
+	});
 });
